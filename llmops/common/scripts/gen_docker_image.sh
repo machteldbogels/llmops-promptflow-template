@@ -90,7 +90,6 @@ if [[ -n "$selected_object" ]]; then
     #echo
     echo "registry details"
     echo "$registry_details"
-    echo "$registry_details" | jq -r --arg name "$REGISTRY_NAME" '.[] | select(.registry_name == $name)'
     echo "build no"
     echo "$build_id"
     echo "connection details"
@@ -108,18 +107,6 @@ if [[ -n "$selected_object" ]]; then
     echo "Registry Username: $registry_username"
     echo "Registry Password: $registry_password"
 
-
-    REGISTRY_NAME=$(echo "$con_object" | jq -r '.REGISTRY_NAME')
-
-    registry_object=$(echo "$registry_details" | jq -r --arg name "$REGISTRY_NAME" '.[] | select(.registry_name == $name)')
-    registry_server=$(echo "$registry_object" | jq -r '.registry_server')
-    registry_username=$(echo "$registry_object" | jq -r '.registry_username')
-    registry_password=$(echo "$registry_object" | jq -r '.registry_password')
-    registry_password=$(echo "$registry_object" | jq -r '.registry_password')
-
-    echo "docker push details"
-    echo $registry_server
-    echo $registry_username
     docker login "$registry_server" -u "$registry_username" --password-stdin <<< "$registry_password"
     docker tag localpf "$registry_server"/"$flow_to_execute"_"$deploy_environment":"$build_id"
     docker push "$registry_server"/"$flow_to_execute"_"$deploy_environment":"$build_id"
