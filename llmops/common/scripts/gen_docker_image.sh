@@ -90,16 +90,28 @@ if [[ -n "$selected_object" ]]; then
     #echo
     echo "registry details"
     echo "$registry_details"
-    echo $registry_details | jq -r --arg name "$REGISTRY_NAME" '.[] | select(.registry_name == $name)'
+    echo "$registry_details" | jq -r --arg name "$REGISTRY_NAME" '.[] | select(.registry_name == $name)'
     echo "build no"
     echo "$build_id"
     echo "connection details"
     echo "$connection_details"
 
+    # Extract individual fields
+    registry_name=$(echo "$registry_details" | jq -r '.registry_name')
+    registry_server=$(echo "$registry_details" | jq -r '.registry_server')
+    registry_username=$(echo "$registry_details" | jq -r '.registry_username')
+    registry_password=$(echo "$registry_details" | jq -r '.registry_password')
+
+    # Print extracted values
+    echo "Registry Name: $registry_name"
+    echo "Registry Server: $registry_server"
+    echo "Registry Username: $registry_username"
+    echo "Registry Password: $registry_password"
+
 
     REGISTRY_NAME=$(echo "$con_object" | jq -r '.REGISTRY_NAME')
 
-    registry_object=$(echo $registry_details | jq -r --arg name "$REGISTRY_NAME" '.[] | select(.registry_name == $name)')
+    registry_object=$(echo "$registry_details" | jq -r --arg name "$REGISTRY_NAME" '.[] | select(.registry_name == $name)')
     registry_server=$(echo "$registry_object" | jq -r '.registry_server')
     registry_username=$(echo "$registry_object" | jq -r '.registry_username')
     registry_password=$(echo "$registry_object" | jq -r '.registry_password')
@@ -109,8 +121,8 @@ if [[ -n "$selected_object" ]]; then
     echo $registry_server
     echo $registry_username
     docker login "$registry_server" -u "$registry_username" --password-stdin <<< "$registry_password"
-    docker tag localpf "$registry_server"/"$flow_to_execute"_"$deploy_environment":"latest"
-    docker push "$registry_server"/"$flow_to_execute"_"$deploy_environment":"latest"
+    docker tag localpf "$registry_server"/"$flow_to_execute"_"$deploy_environment":"$build_id"
+    docker push "$registry_server"/"$flow_to_execute"_"$deploy_environment":"$build_id"
         
     else
         echo "Object in config file not found"
