@@ -54,11 +54,11 @@ if [[ -n "$selected_object" ]]; then
 
     #echo
     echo "registry details"
-    #echo $registry_details
+    echo $registry_details
     echo "build no"
     echo $build_id
     echo "connection details"
-    #echo $connection_details
+    echo $connection_details
 
 
     REGISTRY_NAME=$(echo "$con_object" | jq -r '.REGISTRY_NAME')
