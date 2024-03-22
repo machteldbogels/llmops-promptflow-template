@@ -18,7 +18,6 @@ pipeline {
                         pip install promptflow promptflow-tools promptflow-sdk jinja2 promptflow[azure] openai promptflow-sdk[builtins]                 
                         python -m llmops.common.deployment.provision_endpoint \
                             --subscription_id $AZURE_SUBSCRIPTION_ID \
-                            --model_version $model_version \
                             --build_id $run_id \
                             --output_file "endpoint_principal.txt" \
                             --env_name $env_name \
