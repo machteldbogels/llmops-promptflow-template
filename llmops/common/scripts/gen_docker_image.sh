@@ -63,13 +63,10 @@ if [[ -n "$selected_object" ]]; then
     con_object=$(jq ".webapp_endpoint[] | select(.ENV_NAME == \"$env_name\")" "$deploy_config")
 
     read -r -a connection_names <<< "$(echo "$con_object" | jq -r '.CONNECTION_NAMES | join(" ")')"
-    echo $connection_names
     result_string=""
 
     for name in "${connection_names[@]}"; do
         api_key=$(echo $connection_details | jq -r --arg name "$name" '.[] | select(.name == $name) | .api_key')
-        #echo "aoai connection"
-        #echo $connection_details
         uppercase_name=$(echo "$name" | tr '[:lower:]' '[:upper:]')
         modified_name="${uppercase_name}_API_KEY"
         result_string+=" -e $modified_name=$api_key"
@@ -92,16 +89,17 @@ if [[ -n "$selected_object" ]]; then
 
     #echo
     echo "registry details"
-    echo $registry_details
+    echo "$registry_details"
+    echo $registry_details | jq -r --arg name "$REGISTRY_NAME" '.[] | select(.registry_name == $name)'
     echo "build no"
-    echo $build_id
+    echo "$build_id"
     echo "connection details"
     echo "$connection_details"
 
 
     REGISTRY_NAME=$(echo "$con_object" | jq -r '.REGISTRY_NAME')
 
-    registry_object=$(echo "$registry_details" | jq -r --arg name "$REGISTRY_NAME" '.[] | select(.registry_name == $name)')
+    registry_object=$(echo $registry_details | jq -r --arg name "$REGISTRY_NAME" '.[] | select(.registry_name == $name)')
     registry_server=$(echo "$registry_object" | jq -r '.registry_server')
     registry_username=$(echo "$registry_object" | jq -r '.registry_username')
     registry_password=$(echo "$registry_object" | jq -r '.registry_password')
