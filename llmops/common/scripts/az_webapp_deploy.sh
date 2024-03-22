@@ -56,7 +56,8 @@ for name in "${connection_names[@]}"; do
     api_key=$(echo $connection_details | jq -r --arg name "$name" '.[] | select(.name == $name) | .api_key')
 
      echo "webapp aoai connection"
-     echo $connection_details
+     #echo $connection_details
+
 
     uppercase_name=$(echo "$name" | tr '[:lower:]' '[:upper:]')
     modified_name="${uppercase_name}_API_KEY"

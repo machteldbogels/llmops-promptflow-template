@@ -32,6 +32,8 @@ if [[ -n "$selected_object" ]]; then
 
     for name in "${connection_names[@]}"; do
         api_key=$(echo $connection_details | jq -r --arg name "$name" '.[] | select(.name == $name) | .api_key')
+        #echo "aoai connection"
+        #echo $connection_details
         uppercase_name=$(echo "$name" | tr '[:lower:]' '[:upper:]')
         modified_name="${uppercase_name}_API_KEY"
         result_string+=" -e $modified_name=$api_key"
@@ -42,9 +44,6 @@ if [[ -n "$selected_object" ]]; then
 
     ##uncomment
     #docker run $(echo "$docker_args")
-
-    #sleep 15
-
     #docker ps -a
         
     #chmod +x "./$flow_to_execute/sample-request.json"
@@ -57,11 +56,11 @@ if [[ -n "$selected_object" ]]; then
 
     #echo
     echo "registry details"
-    echo $registry_details
+    #echo $registry_details
     echo "build no"
     echo $build_id
     echo "connection details"
-    echo $connection_details
+    #echo $connection_details
 
 
     REGISTRY_NAME=$(echo "$con_object" | jq -r '.REGISTRY_NAME')
