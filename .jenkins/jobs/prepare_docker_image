@@ -15,7 +15,7 @@ pipeline {
     stage('Create local promptflow connections') {
             steps {
                 withCredentials([azureServicePrincipal('AZURE_CREDENTIALS')]) {
-                    withPythonEnv('/usr/bin/python3.9') {
+                    withPythonEnv('/usr/bin/python3.11') {
                     sh '''
                     python -m pip install -r .jenkins/requirements/execute_job_requirements.txt
                     python -m pip install -r .jenkins/requirements/build_validation_requirements.txt
@@ -33,7 +33,7 @@ pipeline {
             steps {
             withCredentials([string(credentialsId: 'DOCKER_IMAGE_REGISTRY', variable: 'registry_details'),
             string(credentialsId: 'COMMON_DEV_CONNECTIONS', variable: 'connection_details')]) {
-            withPythonEnv('/usr/bin/python3.9') {
+            withPythonEnv('/usr/bin/python3.11') {
                 sh """
                     python -m pip install -r .jenkins/requirements/build_validation_requirements.txt
                     # Your Docker image creation command here

@@ -40,7 +40,7 @@ pipeline {
         stage('Register experiment data asset') {
             steps {
                 withCredentials([azureServicePrincipal('AZURE_CREDENTIALS')]) {
-                    withPythonEnv('/usr/bin/python3.9') {
+                    withPythonEnv('/usr/bin/python3.11') {
                     sh '''
                     python -m pip install -r .jenkins/requirements/execute_job_requirements.txt
                     python -m llmops.common.register_data_asset \\
@@ -59,7 +59,7 @@ pipeline {
         stage('Execute prompt flow bulk run') {
             steps {
                 withCredentials([azureServicePrincipal('AZURE_CREDENTIALS')]) {
-                    withPythonEnv('/usr/bin/python3.9') {
+                    withPythonEnv('/usr/bin/python3.11') {
                     sh '''
                     python -m pip install -r .jenkins/requirements/build_validation_requirements.txt
                     python -m llmops.common.prompt_pipeline \\
@@ -79,7 +79,7 @@ pipeline {
         stage('Register evaluation data asset') {
             steps {
                 withCredentials([azureServicePrincipal('AZURE_CREDENTIALS')]) {
-                    withPythonEnv('/usr/bin/python3.9') {
+                    withPythonEnv('/usr/bin/python3.11') {
                     sh '''
                     python -m llmops.common.register_data_asset \\
                     --subscription_id $AZURE_SUBSCRIPTION_ID \\
@@ -107,7 +107,7 @@ pipeline {
         stage('Read prompt flow runs & Execute bulk run evaluations') {
             steps {
                 withCredentials([azureServicePrincipal('AZURE_CREDENTIALS')]) {
-                    withPythonEnv('/usr/bin/python3.9') {
+                    withPythonEnv('/usr/bin/python3.11') {
                     sh '''
                     run_id=$(cat run_id.txt)
                     echo $run_id

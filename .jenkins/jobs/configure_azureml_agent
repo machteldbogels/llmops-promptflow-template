@@ -14,7 +14,7 @@ pipeline {
         stage('Prepare build environment') {
             steps {
                 withCredentials([azureServicePrincipal('AZURE_CREDENTIALS')]) {
-                    withPythonEnv('/usr/bin/python3.9') {
+                    withPythonEnv('/usr/bin/python3.11') {
                         sh """
                         pip install --upgrade pip
                         pip install setuptools wheel
