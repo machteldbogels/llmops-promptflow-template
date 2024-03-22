@@ -1,5 +1,43 @@
 #!/bin/bash
 
+
+# Parse command line arguments
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --flow_to_execute)
+            flow_to_execute="$2"
+            shift 2
+            ;;
+        --deploy_environment)
+            deploy_environment="$2"
+            shift 2
+            ;;
+        --build_id)
+            build_id="$2"
+            shift 2
+            ;;
+        --REGISTRY_DETAILS)
+            registry_details="$2"
+            shift 2
+            ;;
+        --CONNECTION_DETAILS)
+            connection_details="$2"
+            shift 2
+            ;;
+        *)
+            echo "Unknown option: $1"
+            exit 1
+            ;;
+    esac
+done
+
+# Use the assigned variables as needed
+echo "Flow to execute: $flow_to_execute"
+echo "Deploy environment: $deploy_environment"
+echo "Build ID: $build_id"
+echo "Registry details: $registry_details"
+echo "Connection details: $connection_details"
+
 # Description: 
 # This script generates docker image for Prompt flow deployment
 set -e # fail on error
