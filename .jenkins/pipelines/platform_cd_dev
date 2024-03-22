@@ -17,8 +17,8 @@ parameters {
 
         stage('Register flow as model in AzureML') {
             steps {
-                withCredentials([azureServicePrincipal('AZURE_CREDENTIALS')]) {
-                    withPythonEnv('/usr/bin/python3.11') {
+                withCredentials([azureServicePrincipal('UNICREDIT_PVT_AZURE_CREDENTIALS')]) {
+                    withPythonEnv('/usr/bin/python3.9') {
                     sh """
                     python -m pip install -r .jenkins/requirements/execute_job_requirements.txt
                     python -m llmops.common.deployment.register_model \
