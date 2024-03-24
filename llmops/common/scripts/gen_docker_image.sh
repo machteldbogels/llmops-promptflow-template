@@ -97,8 +97,7 @@ if [[ -n "$selected_object" ]]; then
 
     #Extract individual fields
     registry_name=$(echo "$registry_details" | jq -r '.[0].registry_name')
-    # registry_server=$(echo "$registry_details" | jq -r '.[0].registry_server')
-    registry_server="acrunicredit.privatelink.azurecr.io"
+    registry_server=$(echo "$registry_details" | jq -r '.[0].registry_server')
     registry_username=$(echo "$registry_details" | jq -r '.[0].registry_username')
     registry_password=$(echo "$registry_details" | jq -r '.[0].registry_password')
 
