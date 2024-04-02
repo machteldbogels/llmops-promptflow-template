@@ -37,7 +37,7 @@ pipeline {
 
         stage('Register experiment data asset') {
             steps {
-                installRequirements()
+                installRequirements('execute_job_requirements')
                 withCredentials([azureServicePrincipal('AZURE_CREDENTIALS')]) {
                     withPythonEnv('/usr/bin/python3.9') {
                     sh """
