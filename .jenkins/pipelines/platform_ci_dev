@@ -25,6 +25,35 @@ pipeline {
             }
         }
 
+        stage('Configure Azure ML Agent') {
+            steps {
+                azureLogin()
+                script {
+                    build job: 'jobs/configure_azureml_agent', parameters: [
+                        string(name: 'use_case_base_path', value: "${params.use_case_base_path}")
+                    ]
+                }
+            }
+        }
+
+        // Execute Prompt Experiment
+        stage('Execute Prompt Experiment') {
+            steps {
+                installRequirements('execute_job_requirements')
+                withCredentials([azureServicePrincipal('AZURE_CREDENTIALS')]) {
+                    withPythonEnv('/usr/bin/python3.9') {
+                    sh '''
+                    python -m llmops.common.register_data_asset \\
+                    --subscription_id $AZURE_SUBSCRIPTION_ID \\
+                    --base_path $use_case_base_path \\
+                    --env_name $env_name
+                    '''
+                }
+            }
+
+            }
+        }
+
         // Install requirements for job execution and register the training data asset in AzureML
         stage('Register experiment data asset') {
             steps {
