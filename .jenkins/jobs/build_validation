@@ -53,6 +53,15 @@ pipeline {
             }
         }
 
+        // Python Code Linting
+        stage('Python code linting') {
+            steps {
+                withPythonEnv('/usr/bin/python3.9') {
+                    sh "flake8 ${params.use_case_base_path}/tests"
+                }
+            }
+        }
+
         stage('Publish Unit Test Results') {
             steps {
                 archiveArtifacts artifacts: '**/test-*.xml', fingerprint: true
