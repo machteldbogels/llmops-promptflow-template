@@ -56,7 +56,8 @@ pipeline {
                         sh 'ls -l .env'
 
                         // Optionally, load the .env file using Python
-                        def loadEnvScript = """
+                        def loadEnvScript =
+                        """
                             import os
                             from dotenv import load_dotenv
 
