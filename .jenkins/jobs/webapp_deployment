@@ -30,8 +30,6 @@ pipeline {
 
 
                         // Set environment variable
-                        echo "env variables for webapp"
-                        echo value
                         env."$key" = value
                     }
                 }
@@ -57,21 +55,13 @@ pipeline {
                         // Check if the .env file was created
                         sh 'ls -l .env'
 
-                        // Echo the contents of the .env file
-                        sh 'cat .env'
-
                         // Optionally, load the .env file using Python
                         def loadEnvScript = """
-import os
-from dotenv import load_dotenv
+                            import os
+                            from dotenv import load_dotenv
 
-# Load the .env file
-load_dotenv('.env')
-
-# Print all environment variables for debugging purposes (optional)
-for key, value in os.environ.items():
-    print(f"WEBAPP READING VALUES:--->{key}={value}")
-
+                            # Load the .env file
+                            load_dotenv('.env')
                         """
 
                         // Execute the Python script
